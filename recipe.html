@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantry Tracker & Recipe Suggester</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+        #pantry {
+            margin-bottom: 20px;
+        }
+        .item {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pantry Tracker & Recipe Suggester</h1>
+    <input type="text" id="itemInput" placeholder="Enter pantry item">
+    <button onclick="addItem()">Add Item</button>
+    
+    <h2>Available Pantry Items:</h2>
+    <div id="pantry"></div>
+    
+    <button onclick="suggestRecipes()">Suggest Recipes</button>
+    
+    <h2>Suggested Recipes:</h2>
+    <div id="recipes"></div>
+    
+    <script>
+        let pantryItems = [];
+        const recipes = {
+            "Pasta": ["pasta", "tomato", "cheese"],
+            "Omelette": ["egg", "cheese", "salt"],
+            "Salad": ["lettuce", "tomato", "cucumber"]
+        };
+
+        function addItem() {
+            let item = document.getElementById("itemInput").value.toLowerCase();
+            if (item && !pantryItems.includes(item)) {
+                pantryItems.push(item);
+                updatePantry();
+            }
+            document.getElementById("itemInput").value = "";
+        }
+
+        function updatePantry() {
+            let pantryDiv = document.getElementById("pantry");
+            pantryDiv.innerHTML = "";
+            pantryItems.forEach(item => {
+                let span = document.createElement("span");
+                span.className = "item";
+                span.innerText = item;
+                pantryDiv.appendChild(span);
+            });
+        }
+
+        function suggestRecipes() {
+            let recipeDiv = document.getElementById("recipes");
+            recipeDiv.innerHTML = "";
+            for (let recipe in recipes) {
+                let ingredients = recipes[recipe];
+                if (ingredients.every(ing => pantryItems.includes(ing))) {
+                    let p = document.createElement("p");
+                    p.innerText = recipe;
+                    recipeDiv.appendChild(p);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
